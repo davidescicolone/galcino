@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "outDir": "./build",
+    "rootDir": "./source",
+    "target": "es6",
+    "skipLibCheck": true,
+    "strict": true,
+  },
+  "main": "source/server.ts",
+  "scripts": {
+    "dev": "nodemon source/server.ts",
+    "build": "rm -rf build/ && prettier --write source/ && tsc"
+  }
+}
