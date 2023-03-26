@@ -1,8 +1,9 @@
 import * as mongoDB from "mongodb";
-import {User} from "./models/models";
+import {DBMatch, DBUser} from "./models/models";
 
 export const collections: {
-    users?: mongoDB.Collection<User>
+    users?: mongoDB.Collection<DBUser>
+    match?: mongoDB.Collection<DBMatch>
 } = {};
 
 export async function connectToDatabase() {
@@ -10,5 +11,6 @@ export async function connectToDatabase() {
     await client.connect()
     const db = client.db()
     collections.users = db.collection("users");
+    collections.match = db.collection("matches");
     console.log(`Successfully connected to database: ${db.databaseName}`);
 }

@@ -10,3 +10,29 @@ export interface LoginData {
     username: string,
     password: string
 }
+
+export interface SimpleUser {
+    id?: string,
+    username: string
+    firstName?: string
+    lastName?: string
+    type?: UserType
+}
+
+export interface SecretUser extends SimpleUser {
+    password: string
+}
+
+export type UserType = "standard" | "admin"
+
+interface Team {
+    playersWithApproval:  {
+        player: SimpleUser,
+        approved: boolean
+    }[],
+    score: number
+}
+
+export interface Match {
+    teams: Team[]
+}

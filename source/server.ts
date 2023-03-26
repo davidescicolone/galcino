@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 /** RULES OF OUR API */
-app.use((req, res) => {
+app.use((req, res,next) => {
     // set the CORS policy
     res.header('Access-Control-Allow-Origin', '*');
     // set the CORS headers
@@ -20,6 +20,7 @@ app.use((req, res) => {
         res.header('Access-Control-Allow-Methods', 'GET PATCH DELETE POST');
         return res.status(200).json({});
     }
+    next()
 });
 
 /** Routes */
