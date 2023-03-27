@@ -22,7 +22,7 @@ export const verifyToken = (authorizationHeader: string):SimpleUser =>  {
 
 export const login = async (username: string, password: string): Promise<SimpleUser> => {
 
-    const dbUser = await getDBUserFromUsername(password)
+    const dbUser = await getDBUserFromUsername(username)
 
     if(!dbUser) {
         throw new UnauthorizedError()
