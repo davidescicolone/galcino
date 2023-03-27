@@ -3,15 +3,35 @@ import {buildErrorResponse, UnauthorizedError} from "../services/errors";
 import {ErrorBody, Match} from "../models/models";
 import {verifyToken} from "../services/security";
 import {isSuperUser, isUserEntitled, isValid} from "../services/validations";
-import {getMatches as getMatchesFromDB, insertMatch} from "../database/queries/matches";
+import {getMatch, getMatches as getMatchesFromDB, insertMatch, updateMatch} from "../database/queries/matches";
+import {verify} from "jsonwebtoken";
+import {approveMatchService} from "../services/matches";
+
+export const approveMatch = async (req: Request<any, {}, {}>, res: Response<ErrorBody>) => {
+
+    try {
+        const user = verifyToken(req.headers.authorization)
+
+        const matchId = req.params.matchId
+
+        let match = await getMatch(matchId)
+
+        match = approveMatchService(user, match)
+
+        await updateMatch(match)
+
+    } catch (e: any) {
+        return buildErrorResponse(res, e)
+    }
+}
 
 export const postMatch = async (req: Request<{}, {}, Match>, res: Response<ErrorBody>) => {
 
     try {
 
-        const user = verifyToken(`${req.headers.authorization}`)
+        const user = verifyToken(req.headers.authorization)
 
-        const match = req.body
+        let match = req.body
 
         if (!isValid(match)) {
             throw new Error("match not valid")
@@ -21,15 +41,7 @@ export const postMatch = async (req: Request<{}, {}, Match>, res: Response<Error
             throw new UnauthorizedError()
         }
 
-        if(isSuperUser(user)) {
-            match.approved = true
-            match.superApproved = true
-            match.superApprovedBy = user
-        } else {
-            match.approved = false
-            match.superApproved = false
-            match.teams.forEach(team => team.playersWithApproval.forEach(player => player.approved = user.username==player.player.username))
-        }
+        match = approveMatchService(user,match)
 
         await insertMatch(match)
 

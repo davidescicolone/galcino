@@ -21,6 +21,7 @@ interface Team {
 }
 
 export interface DBMatch {
+    _id?: ObjectId
     superApproved: boolean,
     superApprovedBy?: ObjectId
     approved: boolean,

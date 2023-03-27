@@ -6,9 +6,9 @@ import {DBUser} from "../database/models/models";
 import {getDBUserFromUsername} from "../database/queries/users";
 import {userFrom} from "../database/converters/users";
 
-export const verifyToken = (authorizationHeader: string):SimpleUser =>  {
+export const verifyToken = (authorizationHeader?: string):SimpleUser =>  {
     try {
-        const [bearer, token]:string[] = authorizationHeader.split(" ")
+        const [bearer, token]:string[] = authorizationHeader!.split(" ")
 
         if(bearer != "Bearer") {
             throw new UnauthorizedError()
