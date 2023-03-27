@@ -13,10 +13,11 @@ export interface LoginData {
 
 export interface SimpleUser {
     id?: string,
-    username: string
-    firstName?: string
-    lastName?: string
-    type?: UserType
+    username: string,
+    firstName?: string,
+    lastName?: string,
+    type?: UserType,
+    approved: boolean,
 }
 
 export interface SecretUser extends SimpleUser {

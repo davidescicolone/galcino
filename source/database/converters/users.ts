@@ -9,7 +9,8 @@ export const userFrom = (dbUser:DBUser):SimpleUser => {
         id: dbUser._id!.toString(),
         lastName: dbUser.lastName,
         type: dbUser.type,
-        username: dbUser.username
+        username: dbUser.username,
+        approved: dbUser.approved
     }
 }
 
@@ -21,7 +22,7 @@ export const dbUserFrom = async (user: SecretUser): Promise<DBUser> => {
         firstName: user.firstName!,
         lastName: user.lastName!,
         username: user.username,
-        approved: false,
+        approved: user.approved,
         encryptedPassword: await bcrypt.hash(user.password, salt),
         salt: salt,
         type: user.type!

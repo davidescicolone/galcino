@@ -10,6 +10,7 @@ export const postUser = async (req: Request<{},{},SecretUser>, res: Response<Err
         const user = req.body
 
         user.type = "standard"
+        user.approved = false
 
         await insertUser(user)
 
