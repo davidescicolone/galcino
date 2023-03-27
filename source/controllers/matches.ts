@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {buildErrorResponse, UnauthorizedError} from "../services/errors";
 import {ErrorBody, Match} from "../models/models";
 import {verifyToken} from "../services/security";
-import {isUserEntitled, isValid} from "../services/validations";
+import {isSuperUser, isUserEntitled, isValid} from "../services/validations";
 import {getMatches as getMatchesFromDB, insertMatch} from "../database/queries/matches";
 
 export const postMatch = async (req: Request<{}, {}, Match>, res: Response<ErrorBody>) => {
@@ -19,6 +19,16 @@ export const postMatch = async (req: Request<{}, {}, Match>, res: Response<Error
 
         if (!isUserEntitled(user, match)) {
             throw new UnauthorizedError()
+        }
+
+        if(isSuperUser(user)) {
+            match.approved = true
+            match.superApproved = true
+            match.superApprovedBy = user
+        } else {
+            match.approved = false
+            match.superApproved = false
+            match.teams.forEach(team => team.playersWithApproval.forEach(player => player.approved = user.username==player.player.username))
         }
 
         await insertMatch(match)

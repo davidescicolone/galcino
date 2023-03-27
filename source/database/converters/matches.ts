@@ -16,12 +16,19 @@ export const matchFrom = async (dbMatch: DBMatch): Promise<Match> => {
         };
     }));
     return {
+        approved: dbMatch.approved,
+        superApproved: dbMatch.superApproved,
+        superApprovedBy: dbMatch.superApprovedBy ? await getUser(dbMatch.superApprovedBy) : undefined,
         teams: teams
     };
 };
 
 export const dbMatchFrom = async (match: Match): Promise<DBMatch> => {
+
     return {
+        approved: match.approved,
+        superApproved: match.superApproved,
+        superApprovedBy:  match.superApprovedBy?.username ? (await getDBUserFromUsername(match.superApprovedBy.username))?._id : undefined,
         teams: await Promise.all(
             match.teams!.map(async (team) => {
                 return {
@@ -30,13 +37,13 @@ export const dbMatchFrom = async (match: Match): Promise<DBMatch> => {
                         team.playersWithApproval.map(async (playerWithApproval) => {
                             const user = await getDBUserFromUsername(playerWithApproval.player.username!);
                             return {
-                                approved: false, //TODO: da capire se farlo arrivare da fuori
+                                approved: playerWithApproval.approved,
                                 playerId: user._id!,
                             };
                         })
                     ),
                 };
             })
-        ),
+        )
     };
 }

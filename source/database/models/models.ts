@@ -1,4 +1,4 @@
-import {UserType} from "../../models/models";
+import {SimpleUser, UserType} from "../../models/models";
 import {ObjectId} from "mongodb";
 
 export interface DBUser {
@@ -21,5 +21,8 @@ interface Team {
 }
 
 export interface DBMatch {
+    superApproved: boolean,
+    superApprovedBy?: ObjectId
+    approved: boolean,
     teams: Team[]
 }

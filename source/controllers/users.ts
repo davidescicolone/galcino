@@ -7,7 +7,11 @@ export const postUser = async (req: Request<{},{},SecretUser>, res: Response<Err
 
     try {
 
-        await insertUser(req.body)
+        const user = req.body
+
+        user.type = "standard"
+
+        await insertUser(user)
 
         res.status(200).json()
 

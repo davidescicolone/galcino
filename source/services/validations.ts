@@ -2,7 +2,7 @@ import {SimpleUser, Match} from "../models/models";
 
 export const isUserEntitled = (user: SimpleUser, match: Match): boolean => {
 
-        if(user.type == "admin") {
+        if(isSuperUser(user)) {
             return true
         }
 
@@ -46,4 +46,9 @@ export const isValid = (match: Match):boolean => {
     }
 
     return true
+}
+
+export const isSuperUser = (user: SimpleUser):boolean => {
+
+    return user.type == "admin"
 }

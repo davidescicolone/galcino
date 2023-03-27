@@ -24,6 +24,6 @@ export const dbUserFrom = async (user: SecretUser): Promise<DBUser> => {
         approved: false,
         encryptedPassword: await bcrypt.hash(user.password, salt),
         salt: salt,
-        type: "standard"
+        type: user.type!
     }
 }

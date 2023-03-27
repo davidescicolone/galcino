@@ -34,5 +34,8 @@ interface Team {
 }
 
 export interface Match {
-    teams: Team[]
+    teams: Team[],
+    superApproved: boolean,
+    superApprovedBy?: SimpleUser
+    approved: boolean,
 }
