@@ -25,5 +25,6 @@ export interface DBMatch {
     superApproved: boolean,
     superApprovedBy?: ObjectId
     approved: boolean,
+    timestamp: Date,
     teams: DBTeam[]
 }

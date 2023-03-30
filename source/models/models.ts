@@ -40,4 +40,5 @@ export interface Match {
     superApproved: boolean,
     superApprovedBy?: SimpleUser
     approved: boolean,
+    timestamp: Date
 }

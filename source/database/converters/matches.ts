@@ -19,6 +19,7 @@ export const matchFrom = async (dbMatch: DBMatch): Promise<Match> => {
     }));
     return {
         id: dbMatch._id?.toString(),
+        timestamp: dbMatch.timestamp,
         approved: dbMatch.approved,
         superApproved: dbMatch.superApproved,
         superApprovedBy: dbMatch.superApprovedBy ? await getUser(dbMatch.superApprovedBy) : undefined,
@@ -33,6 +34,7 @@ export const dbMatchFrom = async (match: Match): Promise<DBMatch> => {
         approved: match.approved,
         superApproved: match.superApproved,
         superApprovedBy:  await getUserIdFromUser(match.superApprovedBy),
+        timestamp: match.timestamp,
         teams: await Promise.all(
             match.teams!.map(async (team) => {
                 return {

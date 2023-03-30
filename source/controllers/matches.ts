@@ -4,7 +4,7 @@ import {ErrorBody, Match} from "../models/models";
 import {verifyToken} from "../services/security";
 import {getMatch, getMatches as getMatchesFromDB, insertMatch, updateMatch} from "../database/queries/matches";
 import {verify} from "jsonwebtoken";
-import {approveMatchService, isValid} from "../services/business/matches";
+import {approveMatchService, initializeMatchService, isValid} from "../services/business/matches";
 import {ObjectId} from "mongodb";
 import {isSuperUser, isUserEntitled} from "../services/business/users";
 
@@ -41,6 +41,8 @@ export const postMatch = async (req: Request<{}, {}, Match>, res: Response<Error
         if (!isUserEntitled(user, match)) {
             throw new UnauthorizedError()
         }
+
+        match = initializeMatchService(match)
 
         match = approveMatchService(user,match)
 

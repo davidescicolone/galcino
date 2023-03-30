@@ -1,6 +1,11 @@
 import {Match, SimpleUser} from "../../models/models";
 import {isSuperUser} from "./users";
 
+export const initializeMatchService = (match: Match) => {
+    match.timestamp = new Date()
+    return match
+}
+
 export const approveMatchService = (user: SimpleUser, match: Match): Match => {
 
     if(isSuperUser(user)) {
