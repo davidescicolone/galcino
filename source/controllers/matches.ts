@@ -2,11 +2,11 @@ import {Request, Response} from "express";
 import {buildErrorResponse, UnauthorizedError} from "../services/errors";
 import {ErrorBody, Match} from "../models/models";
 import {verifyToken} from "../services/security";
-import {isSuperUser, isUserEntitled, isValid} from "../services/validations";
 import {getMatch, getMatches as getMatchesFromDB, insertMatch, updateMatch} from "../database/queries/matches";
 import {verify} from "jsonwebtoken";
-import {approveMatchService} from "../services/matches";
+import {approveMatchService, isValid} from "../services/business/matches";
 import {ObjectId} from "mongodb";
+import {isSuperUser, isUserEntitled} from "../services/business/users";
 
 export const approveMatch = async (req: Request<any, {}, {}>, res: Response<ErrorBody>) => {
 

@@ -2,7 +2,7 @@ import {DBMatch} from "../models/models";
 import {Match} from "../../models/models";
 import {getDBUserFromUsername, getUser} from "../queries/users";
 import {ObjectId} from "mongodb";
-import {getUserIdFromUser} from "../../services/users";
+import {getUserIdFromUser} from "../../services/business/users";
 
 export const matchFrom = async (dbMatch: DBMatch): Promise<Match> => {
     const teams = await Promise.all(dbMatch.teams.map(async team => {

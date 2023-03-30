@@ -10,7 +10,7 @@ export const insertMatch = async (match: Match) => {
 export const getMatches = async (): Promise<Match[]> => {
 
     const dbMatches = await collections.match!.find().sort({timestamp: -1}).toArray();
-    const matches = await Promise.all(dbMatches.map(dbMatch => matchFrom(dbMatch)));
+    const matches = Promise.all(dbMatches.map(dbMatch => matchFrom(dbMatch)));
     return matches;
 
 }

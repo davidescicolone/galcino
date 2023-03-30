@@ -12,7 +12,7 @@ export interface DBUser {
     type: UserType
 }
 
-interface Team {
+interface DBTeam {
     playersWithApproval:  {
         playerId: ObjectId,
         approved: boolean
@@ -25,5 +25,5 @@ export interface DBMatch {
     superApproved: boolean,
     superApprovedBy?: ObjectId
     approved: boolean,
-    teams: Team[]
+    teams: DBTeam[]
 }
