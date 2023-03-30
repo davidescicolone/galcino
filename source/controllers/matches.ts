@@ -6,15 +6,16 @@ import {isSuperUser, isUserEntitled, isValid} from "../services/validations";
 import {getMatch, getMatches as getMatchesFromDB, insertMatch, updateMatch} from "../database/queries/matches";
 import {verify} from "jsonwebtoken";
 import {approveMatchService} from "../services/matches";
+import {ObjectId} from "mongodb";
 
 export const approveMatch = async (req: Request<any, {}, {}>, res: Response<ErrorBody>) => {
 
     try {
         const user = verifyToken(req.headers.authorization)
 
-        const matchId = req.params.matchId
+        const matchId: string = req.params.matchId
 
-        let match = await getMatch(matchId)
+        let match = await getMatch(new ObjectId(matchId))
 
         match = approveMatchService(user, match)
 
