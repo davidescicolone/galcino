@@ -17,6 +17,7 @@ interface DBTeam {
         playerId: ObjectId,
         approved: boolean
     }[],
+    tempId: ObjectId
     score: number
 }
 

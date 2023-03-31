@@ -38,6 +38,7 @@ export const dbMatchFrom = async (match: Match): Promise<DBMatch> => {
         teams: await Promise.all(
             match.teams!.map(async (team) => {
                 return {
+                    tempId: new ObjectId(),
                     score: team.score,
                     playersWithApproval: await Promise.all(
                         team.playersWithApproval.map(async (playerWithApproval) => {
