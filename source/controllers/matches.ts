@@ -67,3 +67,18 @@ export const getMatches = async (req: Request<{}, {}, {}>, res: Response<Match[]
         return buildErrorResponse(res,e)
     }
 };
+
+export const getMyMatches = async (req: Request<{}, {}, {}>, res: Response<Match[] | ErrorBody>) => {
+
+    try {
+
+        const user = verifyToken(req.headers.authorization)
+
+        const matches = await getMatchesFromDB( {$match : { "teams.playersWithApproval.playerId" : new ObjectId(user.id)}})
+
+        res.status(200).json(matches)
+
+    } catch (e:any) {
+        return buildErrorResponse(res,e)
+    }
+};
