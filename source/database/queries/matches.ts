@@ -1,7 +1,7 @@
 import {collections} from "../database";
 import {Match} from "../../models/models";
-import {dbMatchFrom, matchFrom} from "../converters/matches";
-import {ObjectId} from "mongodb";
+import {dbMatchFrom} from "../converters/matches";
+import {Document, ObjectId} from "mongodb";
 
 export const insertMatch = async (match: Match) => {
     return collections.match!.insertOne(await dbMatchFrom(match))
@@ -116,10 +116,10 @@ const dbMatchToMatchPipeline:any[] = [
 ]
 
 
-export const getMatches =  async (filter?:any): Promise<Match[]> => {
+export const getMatches =  async (filter?:Document): Promise<Match[]> => {
 
 
-    let pipeline:any[] = filter ? [filter] : []
+    let pipeline:Document[] = filter ? [{$match:filter}] : []
 
     const matches = await collections.match!.aggregate(pipeline.concat(dbMatchToMatchPipeline)).toArray() as Match[]
 
@@ -127,13 +127,6 @@ export const getMatches =  async (filter?:any): Promise<Match[]> => {
 
 }
 
-export const getMatch = async (id:ObjectId): Promise<Match> => {
-
-    const match = await collections.match!.findOne({_id: id})
-
-    return matchFrom(match!)
-
-}
 
 export const updateMatch = async (match: Match) => {
 

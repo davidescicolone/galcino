@@ -2,9 +2,8 @@ import {Request, Response} from "express";
 import {buildErrorResponse, UnauthorizedError} from "../services/errors";
 import {ErrorBody, Match} from "../models/models";
 import {verifyToken} from "../services/security";
-import {getMatch, getMatches as getMatchesFromDB, insertMatch, updateMatch} from "../database/queries/matches";
-import {verify} from "jsonwebtoken";
-import {approveMatchService, initializeMatchService, isValid} from "../services/business/matches";
+import {getMatches as getMatchesFromDB, insertMatch, updateMatch} from "../database/queries/matches";
+import {approveMatchService, getMatchService, initializeMatchService, isValid} from "../services/business/matches";
 import {ObjectId} from "mongodb";
 import {isSuperUser, isUserEntitled} from "../services/business/users";
 
@@ -15,7 +14,7 @@ export const approveMatch = async (req: Request<any, {}, {}>, res: Response<Erro
 
         const matchId: string = req.params.matchId
 
-        let match = await getMatch(new ObjectId(matchId))
+        let match = await getMatchService(new ObjectId(matchId))
 
         match = approveMatchService(user, match)
 
@@ -55,6 +54,21 @@ export const postMatch = async (req: Request<{}, {}, Match>, res: Response<Error
     }
 };
 
+export const getMatch = async (req: Request<any, {}, {}>, res: Response<Match | ErrorBody>) => {
+
+    try {
+
+        const matchId = req.params.matchId
+
+        const match = await getMatchService(matchId)
+
+        res.status(200).json(match)
+
+    } catch (e:any) {
+        return buildErrorResponse(res,e)
+    }
+};
+
 export const getMatches = async (req: Request<{}, {}, {}>, res: Response<Match[] | ErrorBody>) => {
 
     try {
@@ -74,7 +88,7 @@ export const getMyMatches = async (req: Request<{}, {}, {}>, res: Response<Match
 
         const user = verifyToken(req.headers.authorization)
 
-        const matches = await getMatchesFromDB( {$match : { "teams.playersWithApproval.playerId" : new ObjectId(user.id)}})
+        const matches = await getMatchesFromDB( { "teams.playersWithApproval.playerId" : new ObjectId(user.id)})
 
         res.status(200).json(matches)
 
