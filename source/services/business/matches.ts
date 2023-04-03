@@ -1,10 +1,10 @@
 import {Match, SimpleUser} from "../../models/models";
 import {isSuperUser} from "./users";
 import {ObjectId} from "mongodb";
-import {getMatches} from "../../database/queries/matches";
+import {getMatchesService} from "../../database/queries/matches";
 
 export const getMatchService = async (id: ObjectId): Promise<Match> => {
-    return (await getMatches({_id: new ObjectId(id)}))[0]
+    return (await getMatchesService({_id: new ObjectId(id)}))[0]
 }
 
 export const initializeMatchService = (match: Match) => {

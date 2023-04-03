@@ -4,29 +4,6 @@ import {getDBUserFromUsername, getUser} from "../queries/users";
 import {ObjectId} from "mongodb";
 import {getUserIdFromUser} from "../../services/business/users";
 
-export const matchFrom = async (dbMatch: DBMatch): Promise<Match> => {
-    const teams = await Promise.all(dbMatch.teams.map(async team => {
-        const playersWithApproval = await Promise.all(team.playersWithApproval.map(async playerWithApproval => {
-            return {
-                approved: playerWithApproval.approved,
-                player: await getUser(playerWithApproval.playerId)
-            };
-        }));
-        return {
-            score: team.score,
-            playersWithApproval: playersWithApproval
-        };
-    }));
-    return {
-        id: dbMatch._id?.toString(),
-        timestamp: dbMatch.timestamp,
-        approved: dbMatch.approved,
-        superApproved: dbMatch.superApproved,
-        superApprovedBy: dbMatch.superApprovedBy ? await getUser(dbMatch.superApprovedBy) : undefined,
-        teams: teams
-    };
-};
-
 export const dbMatchFrom = async (match: Match): Promise<DBMatch> => {
 
     return {

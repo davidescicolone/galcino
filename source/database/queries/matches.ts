@@ -35,8 +35,7 @@ const dbMatchToMatchPipeline:any[] = [
             "teams.score": 1,
             "teams.id": 1,
             "teams.playersWithApproval.approved": 1,
-            "teams.playersWithApproval.player.id":
-                "$teams.playersWithApproval.player._id",
+            "teams.playersWithApproval.player.id": "$teams.playersWithApproval.player._id",
             "teams.playersWithApproval.player.username": 1,
             "teams.playersWithApproval.player.firstName": 1,
             "teams.playersWithApproval.player.lastName": 1,
@@ -116,8 +115,7 @@ const dbMatchToMatchPipeline:any[] = [
 ]
 
 
-export const getMatches =  async (filter?:Document): Promise<Match[]> => {
-
+export const getMatchesService =  async (filter?:Document): Promise<Match[]> => {
 
     let pipeline:Document[] = filter ? [{$match:filter}] : []
 

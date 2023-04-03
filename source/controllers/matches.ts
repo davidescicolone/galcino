@@ -2,10 +2,10 @@ import {Request, Response} from "express";
 import {buildErrorResponse, UnauthorizedError} from "../services/errors";
 import {ErrorBody, Match} from "../models/models";
 import {verifyToken} from "../services/security";
-import {getMatches as getMatchesFromDB, insertMatch, updateMatch} from "../database/queries/matches";
 import {approveMatchService, getMatchService, initializeMatchService, isValid} from "../services/business/matches";
 import {ObjectId} from "mongodb";
 import {isSuperUser, isUserEntitled} from "../services/business/users";
+import {getMatchesService, insertMatch, updateMatch} from "../database/queries/matches";
 
 export const approveMatch = async (req: Request<any, {}, {}>, res: Response<ErrorBody>) => {
 
@@ -73,7 +73,7 @@ export const getMatches = async (req: Request<{}, {}, {}>, res: Response<Match[]
 
     try {
 
-        const matches = await getMatchesFromDB()
+        const matches = await getMatchesService()
 
         res.status(200).json(matches)
 
@@ -88,7 +88,7 @@ export const getMyMatches = async (req: Request<{}, {}, {}>, res: Response<Match
 
         const user = verifyToken(req.headers.authorization)
 
-        const matches = await getMatchesFromDB( { "teams.playersWithApproval.playerId" : new ObjectId(user.id)})
+        const matches = await getMatchesService( { "teams.playersWithApproval.playerId" : new ObjectId(user.id)})
 
         res.status(200).json(matches)
 
