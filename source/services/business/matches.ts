@@ -14,6 +14,8 @@ export const initializeMatchService = (match: Match) => {
 
 export const approveMatchService = (user: SimpleUser, match: Match): Match => {
 
+    //TODO: implements error in case the user is not entitled to approve this match
+
     if(isSuperUser(user)) {
         match.approved = true
         match.superApproved = true

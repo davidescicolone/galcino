@@ -12,6 +12,11 @@ export const getUserIdFromUser = async (user?: SimpleUser):Promise<ObjectId|unde
 
 }
 
+export const approveUserService = (user: SimpleUser): SimpleUser => {
+    user.approved = true
+    return user
+}
+
 export const initializeUserService = <T extends SimpleUser> (user: T): T => {
     user.type = "standard"
     user.approved = false

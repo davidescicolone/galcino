@@ -2,7 +2,7 @@ import {collections} from "../database";
 import {SecretUser, SimpleUser} from "../../models/models";
 import {DBUser} from "../models/models";
 import {Document, ObjectId} from "mongodb";
-import {dbUserFrom, userFrom} from "../converters/users";
+import {dbUserFrom, enhanceDBUser} from "../converters/users";
 
 export const insertUser = async (user: SecretUser) => {
 
@@ -52,6 +52,14 @@ const searchStage = (query:string, path:string):Document[] => {
             }
         }
     }]
+}
+
+export const updateUser = async (user: SimpleUser) => {
+
+    const dbUser = await getDBUserFromUsername(user.username)
+
+    collections.users!.replaceOne({_id: new ObjectId(dbUser._id)}, enhanceDBUser(dbUser,user))
+
 }
 
 export const searchUsers = async (query: string): Promise<SimpleUser[]> => {
