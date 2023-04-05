@@ -5,16 +5,16 @@ import {verifyToken} from "../services/security";
 import {approveMatchService, getMatchService, initializeMatchService, isValid} from "../services/business/matches";
 import {ObjectId} from "mongodb";
 import {isSuperUser, isUserEntitled} from "../services/business/users";
-import {getMatchesService, insertMatch, updateMatch} from "../database/queries/matches";
+import {getMatchesByUserId, getMatchesService, insertMatch, updateMatch} from "../database/queries/matches";
 
 export const approveMatch = async (req: Request<any, {}, {}>, res: Response<ErrorBody>) => {
 
     try {
         const user = verifyToken(req.headers.authorization)
 
-        const matchId: string = req.params.matchId
+        const matchId:string = req.params.matchId
 
-        let match = await getMatchService(new ObjectId(matchId))
+        let match = await getMatchService(matchId)
 
         match = approveMatchService(user, match)
 
@@ -88,7 +88,7 @@ export const getMyMatches = async (req: Request<{}, {}, {}>, res: Response<Match
 
         const user = verifyToken(req.headers.authorization)
 
-        const matches = await getMatchesService( { "teams.playersWithApproval.playerId" : new ObjectId(user.id)})
+        const matches = getMatchesByUserId(user.id!)
 
         res.status(200).json(matches)
 

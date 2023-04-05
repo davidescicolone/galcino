@@ -64,17 +64,19 @@ export const updateUser = async (user: SimpleUser) => {
 
 export const searchUsers = async (query: string): Promise<SimpleUser[]> => {
 
+    //TODO: to be verified how to leverage on the index to query on all the three fields (lastName,firstName,username) in one shot
+
     const queryByLastName = collections.users?.aggregate(searchStage(query,"lastName").concat(dbUserToUserPipeline)).toArray()
 
     const queryByFirstName = collections.users?.aggregate(searchStage(query,"firstName").concat(dbUserToUserPipeline)).toArray()
 
     const queryByUsername = collections.users?.aggregate(searchStage(query,"username").concat(dbUserToUserPipeline)).toArray()
 
-    return concatAndDedup(await queryByLastName as SimpleUser[], await queryByFirstName as SimpleUser[], await queryByUsername as SimpleUser[])
+    return merge(await queryByLastName as SimpleUser[], await queryByFirstName as SimpleUser[], await queryByUsername as SimpleUser[])
 
 }
 
-export const concatAndDedup = (...userArrays:SimpleUser[][]):SimpleUser[] => {
+const merge = (...userArrays:SimpleUser[][]):SimpleUser[] => {
 
     const users = userArrays.flat()
 

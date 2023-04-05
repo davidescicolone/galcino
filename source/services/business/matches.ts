@@ -3,7 +3,7 @@ import {isSuperUser} from "./users";
 import {ObjectId} from "mongodb";
 import {getMatchesService} from "../../database/queries/matches";
 
-export const getMatchService = async (id: ObjectId): Promise<Match> => {
+export const getMatchService = async (id: string): Promise<Match> => {
     return (await getMatchesService({_id: new ObjectId(id)}))[0]
 }
 

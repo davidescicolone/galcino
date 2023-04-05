@@ -21,7 +21,7 @@ export const enhanceDBUser = (dbUser: DBUser, user: SimpleUser): DBUser => {
     }
 }
 
-export const partialDBUserFrom = (user: SimpleUser): PartialDBUser => {
+const partialDBUserFrom = (user: SimpleUser): PartialDBUser => {
 
     return {
         firstName: user.firstName!,

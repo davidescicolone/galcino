@@ -114,6 +114,9 @@ const dbMatchToMatchPipeline:any[] = [
     },
 ]
 
+export const getMatchesByUserId = async (userId: string): Promise<Match[]> => {
+    return await getMatchesService({"teams.playersWithApproval.playerId": new ObjectId(userId)})
+}
 
 export const getMatchesService =  async (filter?:Document): Promise<Match[]> => {
 
