@@ -88,7 +88,7 @@ export const getMyMatches = async (req: Request<{}, {}, {}>, res: Response<Match
 
         const user = verifyToken(req.headers.authorization)
 
-        const matches = getMatchesByUserId(user.id!)
+        const matches = await getMatchesByUserId(user.id!)
 
         res.status(200).json(matches)
 
