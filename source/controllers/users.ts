@@ -3,12 +3,8 @@ import {ErrorBody, SecretUser, SimpleUser} from "../models/models";
 import {buildErrorResponse, UnauthorizedError} from "../services/errors";
 import {getUser, insertUser, searchUsers, updateUser} from "../database/queries/users";
 import {approveUserService, initializeUserService, isSuperUser} from "../services/business/users";
-import {collections} from "../database/database";
 import {verifyToken} from "../services/security";
-import {approveMatchService, getMatchService} from "../services/business/matches";
 import {ObjectId} from "mongodb";
-import {updateMatch} from "../database/queries/matches";
-import {partialDBUserFrom} from "../database/converters/users";
 
 export const approveUser = async (req: Request<any, {}, {}>, res: Response<ErrorBody>) => {
 
