@@ -77,7 +77,6 @@ const dbMatchToMatchPipeline:any[] = [
             superApprovedBy: 1,
             timestamp: 1,
             "teams.score": "$score",
-            "teams.tempId": "$_id.teamId",
             "teams.playersWithApproval":
                 "$playersWithApproval",
         },
