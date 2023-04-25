@@ -33,7 +33,7 @@ const dbMatchToMatchPipeline:any[] = [
             superApprovedBy: 1,
             timestamp: 1,
             "teams.score": 1,
-            "teams.id": 1,
+            "teams.tempId": 1,
             "teams.playersWithApproval.approved": 1,
             "teams.playersWithApproval.player.id": "$teams.playersWithApproval.player._id",
             "teams.playersWithApproval.player.username": 1,
@@ -47,7 +47,7 @@ const dbMatchToMatchPipeline:any[] = [
         $group: {
             _id: {
                 id: "$_id",
-                teamId: "$teams.id",
+                teamId: "$teams.tempId",
             },
             score: {
                 $first: "$teams.score",
