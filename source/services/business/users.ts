@@ -6,7 +6,7 @@ export const getUserIdFromUser = async (user?: SimpleUser):Promise<ObjectId|unde
 
     if(user === undefined) {
         return undefined
-    }
+  }
 
     return user.id ? new ObjectId(user.id) : (await getDBUserFromUsername(user.username))._id
 
@@ -29,15 +29,13 @@ export const isSuperUser = (user: SimpleUser): boolean => {
 }
 export const isUserEntitled = (user: SimpleUser, match: Match): boolean => {
 
-    if (isSuperUser(user)) {
+  if (isSuperUser(user)) {
         return true
-    }
+  }
 
-    return match.teams!.filter(team =>
-        team.playersWithApproval.filter(player => {
-            return player.player.username == user.username;
-        })
-            .length > 0)
-        .length > 0
+  const players = match.teams.flatMap((team) =>
+    team.playersWithApproval.map((players) => players.player.username)
+  );
 
-}
+  return players.includes(user.username);
+};

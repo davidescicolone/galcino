@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {ErrorBody, SecretUser, SimpleUser} from "../models/models";
 import {buildErrorResponse, UnauthorizedError} from "../services/errors";
-import {getUser, insertUser, searchUsers, updateUser} from "../database/queries/users";
+import {getUser, getUsers, insertUser, searchUsers, updateUser} from "../database/queries/users";
 import {approveUserService, initializeUserService, isSuperUser} from "../services/business/users";
 import {verifyToken} from "../services/security";
 import {ObjectId} from "mongodb";
@@ -59,3 +59,12 @@ export const searchUsersApi = async (req: Request<{},{},{},any>, res: Response<E
         return buildErrorResponse(res,e)
     }
 }
+
+export const getAllUsers = async (req: Request, res: Response) => {
+    try {
+      const users = await getUsers();
+      res.status(200).json(users);
+    } catch (e: any) {
+      return buildErrorResponse(res, e);
+    }
+};

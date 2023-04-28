@@ -102,3 +102,7 @@ const merge = (...userArrays:SimpleUser[][]):SimpleUser[] => {
 
     return dedupUsers
 }
+
+export async function getUsers() {
+    return await collections.users?.find().toArray();
+}
