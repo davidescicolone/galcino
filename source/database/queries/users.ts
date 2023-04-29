@@ -104,5 +104,6 @@ const merge = (...userArrays:SimpleUser[][]):SimpleUser[] => {
 }
 
 export async function getUsers() {
-    return await collections.users?.find().toArray();
+    const users = await collections.users?.aggregate(dbUserToUserPipeline).toArray() as SimpleUser[]
+    return users
 }
