@@ -117,6 +117,17 @@ export const getMatchesByUserId = async (userId: string): Promise<Match[]> => {
     return await getMatchesService({"teams.playersWithApproval.playerId": new ObjectId(userId)})
 }
 
+export const getMatchesToBeApprovedByUserId = async (userId: string): Promise<Match[]> => {
+    return await getMatchesService({
+        "teams.playersWithApproval": {
+            $elemMatch:{
+                "playerId": new ObjectId("642853ee778a46239837905d"),
+                "approved": false
+            }
+        }
+    })
+}
+
 export const getMatchesService =  async (filter?:Document): Promise<Match[]> => {
 
     let pipeline:Document[] = filter ? [{$match:filter}] : []

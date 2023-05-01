@@ -1,7 +1,14 @@
 import express from 'express'
 import {connectToDatabase} from "../database/database";
 import {loginApi} from "../controllers/loginApi";
-import {approveMatch, getMatch, getMatches, getMyMatches, postMatch} from "../controllers/matches";
+import {
+      approveMatch,
+      getMatch,
+      getMatches,
+      getMyMatches,
+      getMyMatchesToBeApproved,
+      postMatch
+} from "../controllers/matches";
 import {approveUser, getAllUsers, postUser, searchUsersApi} from "../controllers/users";
 const router = express.Router()
 
@@ -16,6 +23,7 @@ connectToDatabase()
       router.post("/users/:userId/approve", approveUser);
       router.get("/users/search", searchUsersApi);
       router.get("/users/me/matches", getMyMatches);
+      router.get("/users/me/matches/to-be-approved", getMyMatchesToBeApproved);
       router.get("/users", getAllUsers);
       console.info("server started");
     })
