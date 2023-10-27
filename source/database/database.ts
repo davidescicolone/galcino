@@ -1,9 +1,10 @@
 import * as mongoDB from "mongodb";
-import {DBMatch, DBUser} from "./models/models";
+import {MatchDAO} from "../dao/MatchDAO";
+import {SecretUserDAO} from "../dao/SecretUserDAO";
 
 export const collections: {
-    users?: mongoDB.Collection<DBUser>
-    match?: mongoDB.Collection<DBMatch>
+    users?: mongoDB.Collection<SecretUserDAO>
+    matches?: mongoDB.Collection<MatchDAO>
 } = {};
 
 export async function connectToDatabase() {
@@ -11,6 +12,6 @@ export async function connectToDatabase() {
     await client.connect()
     const db = client.db()
     collections.users = db.collection("users");
-    collections.match = db.collection("matches");
+    collections.matches = db.collection("matches");
     console.log(`Successfully connected to database: ${db.databaseName}`);
 }
